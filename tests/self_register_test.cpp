@@ -18,6 +18,12 @@ using namespace std;
 class test_cls : public self_register<test_cls>
 {
 public:
+
+    int var() const { return m_ivar2; }
+    void setvar(int var) { m_ivar2 = var; }
+
+private:
+    int m_ivar2 = -20;
 };
 
 TEST_CASE("test_cls", "[self_register]")
@@ -26,8 +32,8 @@ TEST_CASE("test_cls", "[self_register]")
     REQUIRE(t1.num_instances() == 1);
     {
         test_cls t2;
-        REQUIRE(t2.num_instances() == 2);
-        REQUIRE(t1.num_instances() == 2);
+        REQUIRE(test_cls::s_num_instances() == 2);
+        REQUIRE(test_cls::s_num_instances() == 2);
         {
             test_cls t3;
             REQUIRE(t3.num_instances() == 3);
@@ -38,6 +44,22 @@ TEST_CASE("test_cls", "[self_register]")
         REQUIRE(t1.num_instances() == 2);
     }
     REQUIRE(t1.num_instances() == 1);
+}
+
+TEST_CASE("test_cls inherit", "[self_register]")
+{
+    test_cls t0;
+    test_cls t1;
+    test_cls t2;
+    test_cls t3;
+
+    test_cls* t = t2.get_instance(0);
+    REQUIRE(t != nullptr);
+    REQUIRE(t == &t0);
+
+    t = test_cls::s_get_instance(2);
+    REQUIRE(t != nullptr);
+    REQUIRE(t == &t2);
 }
 
 TEST_CASE("aclass", "[self_register]")
