@@ -11,9 +11,8 @@ enable_testing()
 
 set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
 
-add_library( self_register STATIC
+add_library( self_register INTERFACE
     self_register.hpp
-    self_register.cpp
     )
 
 set( version 0.1.0 )
@@ -21,7 +20,7 @@ set( version 0.1.0 )
 add_subdirectory( tests )
 
 target_include_directories( self_register
-    PUBLIC
+    INTERFACE
         "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
     )
