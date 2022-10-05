@@ -62,6 +62,23 @@ TEST_CASE("test_cls inherit", "[self_register]")
     REQUIRE(t == &t2);
 }
 
+TEST_CASE("aclass inherit", "[self_register]")
+{
+    // Instances 0 and 1 are in libsr_test_1.so and libsr_test_2.so
+    aclass t2;
+    aclass t3;
+    aclass t4;
+    aclass t5;
+
+    aclass* t = t2.get_instance(4);
+    REQUIRE(t != nullptr);
+    REQUIRE(t == &t4);
+
+    t = aclass::s_get_instance(2);
+    REQUIRE(t != nullptr);
+    REQUIRE(t == &t2);
+}
+
 TEST_CASE("aclass", "[self_register]")
 {
     // These both have a global instance
