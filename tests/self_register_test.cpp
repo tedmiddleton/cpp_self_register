@@ -85,32 +85,73 @@ TEST_CASE("aclass", "[self_register]")
     REQUIRE(sr_test_1_main() == 2);
     REQUIRE(sr_test_2_main() == 2);
     {
-        aclass ainst1;
+        aclass ainst3;
         REQUIRE(sr_test_1_main() == 3);
         REQUIRE(sr_test_2_main() == 3);
-        REQUIRE(ainst1.num_instances() == 3);
+        REQUIRE(ainst3.num_instances() == 3);
         {
-            aclass ainst2;
+            aclass ainst4;
             REQUIRE(sr_test_1_main() == 4);
             REQUIRE(sr_test_2_main() == 4);
-            REQUIRE(ainst1.num_instances() == 4);
-            REQUIRE(ainst2.num_instances() == 4);
+            REQUIRE(ainst3.num_instances() == 4);
+            REQUIRE(ainst4.num_instances() == 4);
             {
-                auto ainst3 = std::make_shared<aclass>();
+                auto ainst5 = std::make_shared<aclass>();
                 REQUIRE(sr_test_1_main() == 5);
                 REQUIRE(sr_test_2_main() == 5);
-                REQUIRE(ainst1.num_instances() == 5);
-                REQUIRE(ainst2.num_instances() == 5);
-                REQUIRE(ainst3->num_instances() == 5);
+                REQUIRE(ainst3.num_instances() == 5);
+                REQUIRE(ainst4.num_instances() == 5);
+                REQUIRE(ainst5->num_instances() == 5);
             }
             REQUIRE(sr_test_1_main() == 4);
             REQUIRE(sr_test_2_main() == 4);
-            REQUIRE(ainst1.num_instances() == 4);
-            REQUIRE(ainst2.num_instances() == 4);
+            REQUIRE(ainst3.num_instances() == 4);
+            REQUIRE(ainst4.num_instances() == 4);
+            {
+                auto painst5 = make_unique<aclass>();
+                REQUIRE(sr_test_1_main() == 5);
+                REQUIRE(sr_test_2_main() == 5);
+                REQUIRE(ainst3.num_instances() == 5);
+                REQUIRE(ainst4.num_instances() == 5);
+                REQUIRE(painst5->num_instances() == 5);
+                auto painst6 = make_unique<aclass>();
+                REQUIRE(sr_test_1_main() == 6);
+                REQUIRE(sr_test_2_main() == 6);
+                REQUIRE(ainst3.num_instances() == 6);
+                REQUIRE(ainst4.num_instances() == 6);
+                REQUIRE(painst5->num_instances() == 6);
+                REQUIRE(painst6->num_instances() == 6);
+                auto painst7 = make_unique<aclass>();
+                REQUIRE(sr_test_1_main() == 7);
+                REQUIRE(sr_test_2_main() == 7);
+                REQUIRE(ainst3.num_instances() == 7);
+                REQUIRE(ainst4.num_instances() == 7);
+                REQUIRE(painst5->num_instances() == 7);
+                REQUIRE(painst6->num_instances() == 7);
+                REQUIRE(painst7->num_instances() == 7);
+                painst5.reset();
+                REQUIRE(sr_test_1_main() == 6);
+                REQUIRE(sr_test_2_main() == 6);
+                REQUIRE(ainst3.num_instances() == 6);
+                REQUIRE(ainst4.num_instances() == 6);
+                REQUIRE(painst6->num_instances() == 6);
+                REQUIRE(painst7->num_instances() == 6);
+                painst6.reset();
+                REQUIRE(sr_test_1_main() == 5);
+                REQUIRE(sr_test_2_main() == 5);
+                REQUIRE(ainst3.num_instances() == 5);
+                REQUIRE(ainst4.num_instances() == 5);
+                REQUIRE(painst7->num_instances() == 5);
+                painst7.reset();
+                REQUIRE(sr_test_1_main() == 4);
+                REQUIRE(sr_test_2_main() == 4);
+                REQUIRE(ainst3.num_instances() == 4);
+                REQUIRE(ainst4.num_instances() == 4);
+            }
         }
         REQUIRE(sr_test_1_main() == 3);
         REQUIRE(sr_test_2_main() == 3);
-        REQUIRE(ainst1.num_instances() == 3);
+        REQUIRE(ainst3.num_instances() == 3);
     }
     REQUIRE(sr_test_1_main() == 2);
     REQUIRE(sr_test_2_main() == 2);
